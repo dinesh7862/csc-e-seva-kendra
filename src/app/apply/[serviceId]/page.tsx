@@ -289,6 +289,26 @@ function DocumentUploadZone({
   );
 }
 
+// Load Razorpay Script dynamically
+const loadRazorpayScript = () => {
+  return new Promise<boolean>((resolve) => {
+    if (typeof window === 'undefined') {
+      resolve(false);
+      return;
+    }
+    if ((window as any).Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 // ── Main Apply Page ──
 export default function ApplyPage({
   params,
@@ -434,33 +454,74 @@ export default function ApplyPage({
     if (!validateStep()) return;
     setSubmitting(true);
 
-    // Simulate processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const amount = service.governmentFee + service.serviceCharge;
 
-    const user = currentUser || {
-      id: generateId(),
-      name: quickLogin.name,
-      email: quickLogin.email,
-      phone: quickLogin.phone,
+    const proceedWithSubmission = (paymentId: string) => {
+      const user = currentUser || {
+        id: generateId(),
+        name: quickLogin.name,
+        email: quickLogin.email,
+        phone: quickLogin.phone,
+      };
+
+      const app = submitApplication({
+        serviceId: service.id,
+        serviceName: service.name,
+        userId: user.id,
+        userName: user.name,
+        userEmail: user.email,
+        userPhone: user.phone,
+        formData,
+        documents: Object.values(uploadedFiles),
+        governmentFee: service.governmentFee,
+        serviceCharge: service.serviceCharge,
+        totalAmount: amount,
+        paymentStatus: 'paid',
+        paymentId: paymentId,
+      });
+
+      setSubmittedApp(app);
+      setSubmitting(false);
     };
 
-    const app = submitApplication({
-      serviceId: service.id,
-      serviceName: service.name,
-      userId: user.id,
-      userName: user.name,
-      userEmail: user.email,
-      userPhone: user.phone,
-      formData,
-      documents: Object.values(uploadedFiles),
-      governmentFee: service.governmentFee,
-      serviceCharge: service.serviceCharge,
-      totalAmount: service.governmentFee + service.serviceCharge,
-      paymentStatus: 'pending',
-    });
+    // Load Razorpay
+    const isLoaded = await loadRazorpayScript();
+    if (!isLoaded) {
+      alert('Razorpay Payment Gateway failed to load. Please check your internet connection.');
+      setSubmitting(false);
+      return;
+    }
 
-    setSubmittedApp(app);
-    setSubmitting(false);
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_mockKey123',
+      amount: amount * 100, // amount in paisa
+      currency: 'INR',
+      name: 'MyESeva',
+      description: `Application facilitation fee for ${service.name}`,
+      image: '/icons/icon-192x192.png',
+      handler: function (response: any) {
+        proceedWithSubmission(response.razorpay_payment_id || 'pay_mockId12345');
+      },
+      prefill: {
+        name: currentUser?.name || quickLogin.name || '',
+        email: currentUser?.email || quickLogin.email || '',
+        contact: currentUser?.phone || quickLogin.phone || '',
+      },
+      notes: {
+        serviceId: service.id,
+      },
+      theme: {
+        color: '#2563EB',
+      },
+      modal: {
+        ondismiss: function () {
+          setSubmitting(false);
+        }
+      }
+    };
+
+    const paymentObject = new (window as any).Razorpay(options);
+    paymentObject.open();
   };
 
   // Success state

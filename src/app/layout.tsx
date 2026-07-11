@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PWARegistration from '@/components/shared/PWARegistration';
+import SupabaseSync from '@/components/shared/SupabaseSync';
 import { APP_NAME, APP_DESCRIPTION, APP_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
@@ -75,6 +76,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <PWARegistration />
+          <SupabaseSync />
           <div className="relative flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
