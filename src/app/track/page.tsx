@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, Send, FileCheck, Clock, CheckCircle, XCircle,
@@ -388,13 +388,16 @@ export default function TrackPage() {
   const { getApplicationByNumber, getApplicationsByPhone } = useAppStore();
 
   // Check URL params for pre-filled search
-  if (typeof window !== 'undefined') {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const num = params.get('number');
-    if (num && !searched && !query) {
+    if (num) {
       setQuery(num);
+      const app = getApplicationByNumber(num.toUpperCase());
+      setResults(app ? [app] : []);
+      setSearched(true);
     }
-  }
+  }, [getApplicationByNumber]);
 
   const handleSearch = () => {
     setSearched(true);

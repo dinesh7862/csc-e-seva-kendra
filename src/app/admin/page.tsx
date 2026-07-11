@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -127,8 +127,13 @@ export default function AdminDashboard() {
   };
 
   // Redirect if not admin
+  useEffect(() => {
+    if (!isAdmin) {
+      router.push('/admin/login');
+    }
+  }, [isAdmin, router]);
+
   if (!isAdmin) {
-    router.push('/admin/login');
     return null;
   }
 

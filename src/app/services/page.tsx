@@ -1,15 +1,26 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 import ServiceCard from '@/components/services/ServiceCard';
 import { useAppStore } from '@/store/appStore';
 import { categories } from '@/data/categories';
 import { useSearchParams } from 'next/navigation';
-import type { Metadata } from 'next';
 
 export default function ServicesPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <p className="text-muted-foreground animate-pulse text-sm">Loading Services...</p>
+      </div>
+    }>
+      <ServicesList />
+    </Suspense>
+  );
+}
+
+function ServicesList() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || 'all';
 
