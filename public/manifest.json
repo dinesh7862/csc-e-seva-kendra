@@ -1,6 +1,6 @@
 {
-  "name": "E Seva Kendra — Digital Service Portal",
-  "short_name": "E Seva Kendra",
+  "name": "MyESeva — Digital Service Portal",
+  "short_name": "MyESeva",
   "description": "A private service portal helping citizens prepare and submit government service applications",
   "start_url": "/",
   "display": "standalone",

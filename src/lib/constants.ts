@@ -3,21 +3,21 @@
 // ============================================================
 
 /** Application metadata */
-export const APP_NAME = 'CSC. E Seva Kendra';
+export const APP_NAME = 'MyESeva';
 export const APP_TAGLINE = 'Your Gateway to Government Services';
 export const APP_DESCRIPTION =
   'A private service portal that helps citizens prepare and submit applications for various government services. Fast, secure, and reliable assistance.';
-export const APP_URL = 'https://esevakendra.in';
+export const APP_URL = 'https://myeseva.in';
 
 /** Disclaimer text shown across the application */
 export const DISCLAIMER_TEXT =
-  'This is NOT an official government website. E Seva Kendra is a private service portal that assists citizens in preparing and submitting applications for various government-related services. Government fees are separate from our service charges.';
+  'This is NOT an official government website. MyESeva is a private service portal that assists citizens in preparing and submitting applications for various government-related services. Government fees are separate from our service charges.';
 
 export const DISCLAIMER_SHORT =
   'Private service portal — not affiliated with any government body.';
 
 /** Application number prefix */
-export const APP_NUMBER_PREFIX = 'ESK';
+export const APP_NUMBER_PREFIX = 'MES';
 
 /** Max file upload size in bytes (10MB) */
 export const MAX_FILE_SIZE = 10 * 1024 * 1024;
