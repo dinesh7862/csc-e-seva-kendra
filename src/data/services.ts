@@ -8,17 +8,17 @@ export const services: Service[] = [
   // ──────────────── IDENTITY DOCUMENTS ────────────────
   {
     id: 'aadhaar',
-    name: 'Aadhaar Card',
+    name: 'Aadhaar Card (New Enrollment)',
     icon: 'Fingerprint',
-    description: 'Apply for new Aadhaar Card, update details, or request corrections.',
+    description: 'Apply for new Aadhaar Card — fresh enrollment for citizens without an existing Aadhaar.',
     longDescription:
-      'Aadhaar is a 12-digit unique identity number issued by UIDAI to residents of India. Our service helps you with new enrollment, address update, name correction, mobile number linking, and biometric updates. We handle the complete process from documentation to submission.',
+      'Aadhaar is a 12-digit unique identity number issued by UIDAI to residents of India. Our service helps you with new Aadhaar enrollment. We handle the complete process from documentation to submission at the nearest enrollment center.',
     categoryId: 'identity',
     processingTime: '5-7 Working Days',
     governmentFee: 50,
     serviceCharge: 199,
     eligibility: [
-      'Indian citizen or resident',
+      'Indian citizen or resident who does not have an existing Aadhaar',
       'Must provide valid address proof',
       'Biometric data (fingerprint, iris) required at enrollment center',
       'No age restriction — available for newborns to senior citizens',
@@ -38,8 +38,7 @@ export const services: Service[] = [
       { id: 'email', label: 'Email Address', type: 'email', placeholder: 'Enter email address', required: false },
       { id: 'address', label: 'Full Address', type: 'textarea', placeholder: 'Enter complete address', required: true },
       { id: 'pincode', label: 'PIN Code', type: 'text', placeholder: 'Enter 6-digit PIN code', required: true, validation: { pattern: '^\\d{6}$', message: 'Enter a valid 6-digit PIN code' } },
-      { id: 'state', label: 'State', type: 'dropdown', options: ['Andhra Pradesh', 'Bihar', 'Delhi', 'Gujarat', 'Karnataka', 'Maharashtra', 'Rajasthan', 'Tamil Nadu', 'Uttar Pradesh', 'West Bengal'], required: true },
-      { id: 'request_type', label: 'Request Type', type: 'dropdown', options: ['New Enrollment', 'Update Address', 'Name Correction', 'Mobile Update', 'Biometric Update'], required: true },
+      { id: 'state', label: 'State', type: 'dropdown', options: ['Andhra Pradesh', 'Bihar', 'Delhi', 'Gujarat', 'Karnataka', 'Maharashtra', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Uttar Pradesh', 'West Bengal'], required: true },
     ],
     featured: true,
     active: true,
